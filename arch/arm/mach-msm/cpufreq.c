@@ -2,6 +2,7 @@
  *
  * MSM architecture cpufreq driver
  *
+ * Copyright (C) 2007 Google, Inc.
  * Copyright (c) 2007-2013, The Linux Foundation. All rights reserved.
  * Author: Mike A. Chan <mikechan@google.com>
  *
