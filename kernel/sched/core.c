@@ -2182,6 +2182,7 @@ unsigned long avg_nr_running(void)
 			ave_nr_running = q->ave_nr_running;
 		}
 
+
 		sum += ave_nr_running;
 	}
 
