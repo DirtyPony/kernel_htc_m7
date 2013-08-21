@@ -1022,16 +1022,6 @@ static void dbs_input_event(struct input_handle *handle, unsigned int type,
 {
 	int i;
 
-	if ((dbs_tuners_ins.powersave_bias == POWERSAVE_BIAS_MAXLEVEL) ||
-		(dbs_tuners_ins.powersave_bias == POWERSAVE_BIAS_MINLEVEL)) {
-		/* nothing to do */
-		return;
-	}
-
-	for_each_online_cpu(i) {
-		queue_work_on(i, input_wq, &per_cpu(dbs_refresh_work, i));
-	}
-}
 	if (type == EV_SYN && code == SYN_REPORT) {
 		if ((dbs_tuners_ins.powersave_bias == POWERSAVE_BIAS_MAXLEVEL) ||
 			(dbs_tuners_ins.powersave_bias == POWERSAVE_BIAS_MINLEVEL)) {
@@ -1186,8 +1176,7 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 		if (!cpu){
 #ifdef CONFIG_INPUT_MEDIATOR
 			input_register_mediator_secondary(&dbs_input_mediator_handler);
-#else		
-			input_register_handler(&dbs_input_handler);
+
 #endif
 		}
 		mutex_unlock(&dbs_mutex);
@@ -1216,7 +1205,6 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 			input_unregister_handler(&dbs_input_handler);
 #endif
 		}
-
 		mutex_unlock(&dbs_mutex);
 		if (!dbs_enable)
 			sysfs_remove_group(cpufreq_global_kobject,
